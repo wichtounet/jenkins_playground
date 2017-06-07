@@ -6,7 +6,7 @@ pipeline {
     stages {
         stage ('build'){
             steps {
-                sh 'exit 1'
+                sh 'exit 0'
             }
         }
     }
