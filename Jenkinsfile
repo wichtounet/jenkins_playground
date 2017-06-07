@@ -6,12 +6,26 @@ pipeline {
     stages {
         stage ('build'){
             steps {
-                sh 'exit 0'
+                sh 'exit 1'
+            }
+        }
+
+        stage ('success'){
+            steps {
+                script {
+                    currentBuild.result = 'SUCCESS'
+                }
             }
         }
     }
 
     post {
+        failure {
+            script {
+                currentBuild.result = 'FAILURE'
+            }
+        }
+
         always {
             // TODO This should send "Back to normal notification"
             step([$class: 'Mailer',
