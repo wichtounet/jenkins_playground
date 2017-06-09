@@ -6,27 +6,18 @@ pipeline {
     stages {
         stage ('build'){
             steps {
-                sh 'exit 0'
-            }
-        }
-
-        stage ('success'){
-            steps {
-                script {
-                    currentBuild.result = 'SUCCESS'
-                }
+                sh 'exit 1'
             }
         }
     }
 
     post {
-        failure {
-            script {
-                currentBuild.result = 'FAILURE'
-            }
-        }
-
         always {
+            script {
+                if (currentBuild.result == null) {
+                    currentBuild.result = 'SUCCESS'
+                }
+            }
             // TODO This should send "Back to normal notification"
             step([$class: 'Mailer',
                 notifyEveryUnstableBuild: true,
